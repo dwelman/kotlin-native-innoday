@@ -1,0 +1,4 @@
+FROM openjdk:11
+RUN mkdir /app
+COPY ./build/libs/innoday-km-jvm-1.0-SNAPSHOT.jar /app/innoday.jar
+ENTRYPOINT ["java","-jar","/app/innoday.jar"]
