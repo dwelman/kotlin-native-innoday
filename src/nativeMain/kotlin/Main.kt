@@ -1,5 +1,4 @@
 
 fun main() {
-    //createServer()
-    print("HELLO WORLD")
+    createServer()
 }
