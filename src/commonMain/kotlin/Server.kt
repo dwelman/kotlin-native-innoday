@@ -10,6 +10,13 @@ fun createServer(): ApplicationEngine {
             get("/") {
                 call.respondText("Hello, world!")
             }
+
+            get("/factorial/{number}") {
+                val number = call.parameters["number"]
+
+                number?.toInt()?.apply { factorial(this) }
+                    ?: throw IllegalArgumentException("$number is not a number.")
+            }
         }
     }.start(wait = true)
 }
