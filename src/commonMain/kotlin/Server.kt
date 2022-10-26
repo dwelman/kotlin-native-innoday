@@ -19,6 +19,24 @@ fun createServer(): ApplicationEngine {
 
                 call.respondText(result.toString())
             }
+
+            get("/lists/{number}") {
+                val requestNumber = call.parameters["number"]
+
+                val result = call.parameters["number"]?.toInt()?.let { number -> listBuilder(number) }
+                    ?: throw IllegalArgumentException("$requestNumber is not a number.")
+
+                call.respondText(result.toString())
+            }
+
+            get("/hanoi/{number}") {
+                val requestNumber = call.parameters["number"]
+
+                val result = call.parameters["number"]?.toInt()?.let { number -> solveHanoi(number) }
+                    ?: throw IllegalArgumentException("$requestNumber is not a number.")
+
+                call.respondText(result.toString())
+            }
         }
     }.start(wait = true)
 }
