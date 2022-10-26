@@ -5,6 +5,7 @@ val logback_version: String by project
 plugins {
     kotlin("multiplatform") version "1.7.20"
     id("io.kotest.multiplatform") version "5.5.2"
+    id("io.ktor.plugin") version "2.1.2"
     application
 }
 
@@ -54,6 +55,7 @@ kotlin {
             }
         }
         val nativeMain by getting {
+            dependsOn(commonMain)
             dependencies {
                 dependsOn(commonMain)
                 implementation("io.ktor:ktor-server-core:$ktor_version")
@@ -66,6 +68,7 @@ kotlin {
         val jvmMain by getting {
             dependsOn(commonMain)
             dependencies {
+                implementation("io.ktor:ktor-server-cio:$ktor_version")
                 implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
                 implementation("ch.qos.logback:logback-classic:$logback_version")
             }
