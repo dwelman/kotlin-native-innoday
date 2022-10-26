@@ -1,8 +1,10 @@
 val ktor_version: String by project
+val kotest_version: String by project
 val logback_version: String by project
 
 plugins {
     kotlin("multiplatform") version "1.7.20"
+    id("io.kotest.multiplatform") version "5.5.2"
     application
 }
 
@@ -15,7 +17,7 @@ repositories {
 
 kotlin {
     val nativeTarget = when (System.getProperty("os.name")) {
-        "Mac OS X" -> macosX64("native")
+        "Mac OS X" -> linuxX64("native")
         "Linux" -> linuxX64("native")
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
@@ -44,7 +46,11 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test"))
+                implementation("io.kotest:kotest-framework-engine:$kotest_version")
+                implementation("io.kotest:kotest-assertions-core:$kotest_version")
+
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
             }
         }
         val nativeMain by getting {
@@ -66,8 +72,15 @@ kotlin {
         }
         val jvmTest by getting {
             dependsOn(commonTest)
+            dependencies {
+                implementation("io.kotest:kotest-runner-junit5:$kotest_version")
+            }
         }
     }
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 application {
