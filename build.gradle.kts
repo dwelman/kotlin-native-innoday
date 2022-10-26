@@ -8,7 +8,7 @@ plugins {
     application
 }
 
-group = "me.bjorn"
+group = "com.example"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -79,10 +79,16 @@ kotlin {
     }
 }
 
+application {
+    mainClass.set("MainKt")
+}
+
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
 
-application {
-    mainClass.set("MainKt")
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "MainKt"
+    }
 }
